@@ -1,6 +1,6 @@
 DOI finder
 
-This is a short python script to faciliate the addition of Digital Object Identifier (DOI) entries to an existing bibtex .bib database.
+This is a short python script to faciliate the addition of Digital Object Identifier (DOI) entries to an existing bibtex .bib database. It uses the sites http://www.crossref.org/ and http://www.google.com/ to find the DOI of a bibliographic entry. Found DOIs are added to the bibtex database automatically or after manual confirmation, depending on the probability of a correct resolution.
 
 Synax:
 src/doi-finder file.bib
