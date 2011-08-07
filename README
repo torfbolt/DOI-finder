@@ -1,0 +1,6 @@
+DOI finder
+
+This is a short python script to faciliate the addition of Digital Object Identifier (DOI) entries to an existing bibtex .bib database.
+
+Synax:
+src/doi-finder file.bib
