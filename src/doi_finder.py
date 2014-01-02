@@ -27,9 +27,15 @@ import subprocess
 import sys
 import codecs
 from pybtex.database.input import bibtex
-
+import os
 DOI_REGEX = "doi.+(10\\.\d{4,6}/[^\"'&<% \t\n\r\f\v]+)"
 
+
+browser = mechanize.Browser()
+browser.set_handle_robots(False)
+browser.addheaders = [('User-agent', 'Firefox')] 
+    
+    
 def insert_doi(file_str, key, doi):
     return file_str.replace(key + ",\n", key + ",\n  doi = {" + doi + "},\n")
 
@@ -84,9 +90,10 @@ def crossref_auth_title_to_doi(author, title):
     browser["auth2"] = re.sub(r'[A-Z] ', ' ',
         re.sub(r'[^a-zA-Z0-9 ]+', ' ', author).split("and")[0])
     browser["atitle2"] = re.sub(r'[^a-zA-Z0-9 ]+', ' ', title)
-    response = browser.submit()
-    sourcecode = response.get_data()
-    try:
+    try: #I moved this        
+        response = browser.submit()
+        sourcecode = response.get_data()
+    
         return find_doi(sourcecode)
     except:
         pass
@@ -148,7 +155,7 @@ def bibfile_process(bibfile_name):
         try:
             author = detex(value.fields['author'])
             title = detex(value.fields['title'])
-            journal = value.fields['journal']
+            journal = value.fields['journaltitle']
             volume = value.fields['volume']
             pages = value.fields['pages']
         except:
@@ -183,4 +190,6 @@ if __name__ == '__main__':
     browser = mechanize.Browser()
     browser.set_handle_robots(False)
     browser.addheaders = [('User-agent', 'Firefox')]         # Google doesn't like robots :/
-    bibfile_process(sys.argv[1])
+    bib= raw_input("file:")
+    bibfile = "%s/%s" % ( os.getcwd(),bib) if not os.path.isfile(bib) else bib 
+    bibfile_process(bibfile)
